@@ -61,7 +61,7 @@ public class ESColumn {
     }
 
     public Boolean isArray() {
-        return array;
+        return array == null ? Boolean.FALSE : array;
     }
 
     public void setArray(Boolean array) {

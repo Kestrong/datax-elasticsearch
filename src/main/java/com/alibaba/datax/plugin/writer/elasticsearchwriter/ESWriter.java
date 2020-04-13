@@ -108,16 +108,17 @@ public class ESWriter extends Writer {
                     columnItem.setName(colName);
                     columnItem.setType(colTypeStr);
 
+                    Boolean array = jo.getBoolean("array");
+                    if (array != null) {
+                        columnItem.setArray(array);
+                    }
+
                     if (colType == ESFieldType.ID) {
                         columnList.add(columnItem);
                         // 如果是id,则properties为空
                         continue;
                     }
 
-                    Boolean array = jo.getBoolean("array");
-                    if (array != null) {
-                        columnItem.setArray(array);
-                    }
                     Map<String, Object> field = new HashMap<String, Object>();
                     field.put("type", colTypeStr);
                     //https://www.elastic.co/guide/en/elasticsearch/reference/5.2/breaking_50_mapping_changes.html#_literal_index_literal_property
@@ -423,17 +424,25 @@ public class ESWriter extends Writer {
                     String columnName = record.getKey().getName();
                     setColumnValue(columnType, record.getKey(), column, data, columnName);
                 } else if (value instanceof Map) {
-                    List<Map<String, Object>> o = (List<Map<String, Object>>) data.computeIfAbsent(record.getKey().getName(), k -> new ArrayList<Map<String, Object>>());
-                    Map<String, Map<ESColumn, Object>> childValue = (Map<String, Map<ESColumn, Object>>) value;
-                    for (Map.Entry<String, Map<ESColumn, Object>> childRecord : childValue.entrySet()) {
-                        Map<String, Object> childData = new HashMap<>();
-                        getRecData(childRecord.getValue(), childData);
-                        if (!childData.values().isEmpty() && childData.values().stream().anyMatch(Objects::nonNull)) {
-                            o.add(childData);
+                    if (!record.getKey().isArray()) {
+                        Map<String, Object> o = (Map<String, Object>) data.computeIfAbsent(record.getKey().getName(), k -> new HashMap<String, Object>());
+                        Map<String, Map<ESColumn, Object>> childValue = (Map<String, Map<ESColumn, Object>>) value;
+                        for (Map.Entry<String, Map<ESColumn, Object>> childRecord : childValue.entrySet()) {
+                            getRecData(childRecord.getValue(), o);
                         }
-                    }
-                    if (o.isEmpty()) {
-                        data.remove(record.getKey().getName());
+                    } else {
+                        List<Map<String, Object>> o = (List<Map<String, Object>>) data.computeIfAbsent(record.getKey().getName(), k -> new ArrayList<Map<String, Object>>());
+                        Map<String, Map<ESColumn, Object>> childValue = (Map<String, Map<ESColumn, Object>>) value;
+                        for (Map.Entry<String, Map<ESColumn, Object>> childRecord : childValue.entrySet()) {
+                            Map<String, Object> childData = new HashMap<>();
+                            getRecData(childRecord.getValue(), childData);
+                            if (!childData.values().isEmpty() && childData.values().stream().anyMatch(Objects::nonNull)) {
+                                o.add(childData);
+                            }
+                        }
+                        if (o.isEmpty()) {
+                            data.remove(record.getKey().getName());
+                        }
                     }
                 }
             }
