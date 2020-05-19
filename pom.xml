@@ -7,8 +7,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>elasticsearchwriter</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <artifactId>datax-elasticsearch</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <modules>
+        <module>elasticsearchwriter</module>
+        <module>elasticsearchreader</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -52,6 +58,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <!-- compiler plugin -->
@@ -67,21 +74,19 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/package.xml</descriptor>
-                    </descriptors>
                     <finalName>datax</finalName>
+                    <descriptors>
+                        <descriptor>package.xml</descriptor>
+                    </descriptors>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>dwzip</id>
+                        <id>make-assembly</id>
                         <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>
