@@ -2,6 +2,15 @@
 
 datax的elacticsearch读写插件
 
+# Quick Start
+
+* 使用maven编译：
+```
+mvn -U clean package assembly:assembly -Dmaven.test.skip=true
+```
+* 将编译打包后的插件放到datax目录相应的位置
+
+
 # Support Data Channels 
 
 | 类型           | 数据源        | Reader(读) | Writer(写) |文档|
