@@ -116,44 +116,64 @@
 #### 3.2 参数说明
 
 * endpoint
- * 描述：ElasticSearch的连接地址
- * 必选：是
- * 默认值：无
+  * 描述：ElasticSearch的连接地址
+  * 必选：是
+  * 默认值：无
 
 * accessId
- * 描述：http auth中的user
- * 必选：否
- * 默认值：空
+  * 描述：http auth中的user
+  * 必选：否
+  * 默认值：空
 
 * accessKey
- * 描述：http auth中的password
- * 必选：否
- * 默认值：空
+  * 描述：http auth中的password
+  * 必选：否
+  * 默认值：空
 
 * index
- * 描述：elasticsearch中的index名
- * 必选：是
- * 默认值：无
+  * 描述：elasticsearch中的index名
+  * 必选：是
+  * 默认值：无
 
 * type
- * 描述：elasticsearch中index的type名
- * 必选：否
- * 默认值：index名
+  * 描述：elasticsearch中index的type名
+  * 必选：否
+  * 默认值：index名
+
+* timeout
+  * 描述：客户端超时时间
+  * 必选：否
+  * 默认值：600000
+
+* discovery
+  * 描述：启用节点发现将(轮询)并定期更新客户机中的服务器列表。
+  * 必选：否
+  * 默认值：false
+
+* compression
+  * 描述：http请求，开启压缩
+  * 必选：否
+  * 默认值：true
+
+* multiThread
+  * 描述：http请求，是否有多线程
+  * 必选：否
+  * 默认值：true
 
 * searchType
- * 描述：搜索类型
- * 必选：否
- * 默认值：dfs_query_then_fetch
+  * 描述：搜索类型
+  * 必选：否
+  * 默认值：dfs_query_then_fetch
  
 * headers
- * 描述：http请求头
- * 必选：否
- * 默认值：空
+  * 描述：http请求头
+  * 必选：否
+  * 默认值：空
   
 * scroll
- * 描述：滚动分页配置
- * 必选：否
- * 默认值：空
+  * 描述：滚动分页配置
+  * 必选：否
+  * 默认值：空
 
 * search
   * 描述：json格式api搜索数据体
@@ -161,14 +181,14 @@
   * 默认值：[]
 
 * table
- * 描述: 数据读取规则配置，name命名，nameCase全局字段大小写，filter使用ognl表达式进行过滤
- * 必选: 是
- * 默认值: 无
+  * 描述: 数据读取规则配置，name命名，nameCase全局字段大小写，filter使用ognl表达式进行过滤
+  * 必选: 是
+  * 默认值: 无
 
 * column
- * 描述：需要读取的字段，name对应es文档的key，alias为最终记录的字段名如果为空则使用name，value表示字段为常量，child为嵌套对象
- * 必选：是
- * 默认值：无
+  * 描述：需要读取的字段，name对应es文档的key，alias为最终记录的字段名如果为空则使用name，value表示字段为常量，child为嵌套对象
+  * 必选：是
+  * 默认值：无
 
 
 ## 4 性能报告

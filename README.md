@@ -15,7 +15,7 @@ mvn -U clean package assembly:assembly -Dmaven.test.skip=true
 
 | 类型           | 数据源        | Reader(读) | Writer(写) |文档|
 | ------------ | ---------- | :-------: | :-------: |:-------: |
-|       无结构化数据存储       | Elasticsearch       |   √      |     √     |[读](https://github.com/Kestrong/datax-elasticsearch/blob/master/elasticsearchreader/doc/elasticsearchreader.md)[写](https://github.com/Kestrong/datax-elasticsearch/blob/master/elasticsearchwriter/doc/elasticsearchwriter.md)|
+|       无结构化数据存储       | Elasticsearch       |   √      |     √     |[读](https://github.com/Kestrong/datax-elasticsearch/blob/master/elasticsearchreader/doc/elasticsearchreader.md)、[写](https://github.com/Kestrong/datax-elasticsearch/blob/master/elasticsearchwriter/doc/elasticsearchwriter.md)|
 
 # 参考文档
 

@@ -74,108 +74,108 @@
 #### 3.2 参数说明
 
 * flatToNested
- * 描述：一对多转成嵌套对象，数据必须按主表主键排序，分批时要保证子表数据完整，嵌套对象必须配置id字段用于分组（不想写入es可以设置ignore为true）
- * 必选：否
- * 默认值：false
+  * 描述：一对多转成嵌套对象，数据必须按主表主键排序，分批时要保证子表数据完整，嵌套对象必须配置id字段用于分组（不想写入es可以设置ignore为true）
+  * 必选：否
+  * 默认值：false
 
 * endpoint
- * 描述：ElasticSearch的连接地址
- * 必选：是
- * 默认值：无
+  * 描述：ElasticSearch的连接地址
+  * 必选：是
+  * 默认值：无
 
 * accessId
- * 描述：http auth中的user
- * 必选：否
- * 默认值：空
+  * 描述：http auth中的user
+  * 必选：否
+  * 默认值：空
 
 * accessKey
- * 描述：http auth中的password
- * 必选：否
- * 默认值：空
+  * 描述：http auth中的password
+  * 必选：否
+  * 默认值：空
 
 * index
- * 描述：elasticsearch中的index名
- * 必选：是
- * 默认值：无
+  * 描述：elasticsearch中的index名
+  * 必选：是
+  * 默认值：无
 
 * type
- * 描述：elasticsearch中index的type名
- * 必选：否
- * 默认值：index名
+  * 描述：elasticsearch中index的type名
+  * 必选：否
+  * 默认值：index名
 
 * cleanup
- * 描述：是否删除原表
- * 必选：否
- * 默认值：false
+  * 描述：是否删除原表
+  * 必选：否
+  * 默认值：false
 
 * batchSize
- * 描述：每次批量数据的条数
- * 必选：否
- * 默认值：1000
+  * 描述：每次批量数据的条数
+  * 必选：否
+  * 默认值：1000
 
 * trySize
- * 描述：失败后重试的次数
- * 必选：否
- * 默认值：30
+  * 描述：失败后重试的次数
+  * 必选：否
+  * 默认值：30
 
 * timeout
- * 描述：客户端超时时间
- * 必选：否
- * 默认值：600000
+  * 描述：客户端超时时间
+  * 必选：否
+  * 默认值：600000
 
 * discovery
- * 描述：启用节点发现将(轮询)并定期更新客户机中的服务器列表。
- * 必选：否
- * 默认值：false
+  * 描述：启用节点发现将(轮询)并定期更新客户机中的服务器列表。
+  * 必选：否
+  * 默认值：false
 
 * compression
- * 描述：http请求，开启压缩
- * 必选：否
- * 默认值：true
+  * 描述：http请求，开启压缩
+  * 必选：否
+  * 默认值：true
 
 * multiThread
- * 描述：http请求，是否有多线程
- * 必选：否
- * 默认值：true
+  * 描述：http请求，是否有多线程
+  * 必选：否
+  * 默认值：true
 
 * ignoreWriteError
- * 描述：忽略写入错误，不重试，继续写入
- * 必选：否
- * 默认值：false
+  * 描述：忽略写入错误，不重试，继续写入
+  * 必选：否
+  * 默认值：false
 
 * ignoreParseError
- * 描述：忽略解析数据格式错误，继续写入
- * 必选：否
- * 默认值：true
+  * 描述：忽略解析数据格式错误，继续写入
+  * 必选：否
+  * 默认值：true
 
 * alias
- * 描述：数据导入完成后写入别名
- * 必选：否
- * 默认值：无
+  * 描述：数据导入完成后写入别名
+  * 必选：否
+  * 默认值：无
 
 * aliasMode
- * 描述：数据导入完成后增加别名的模式，append(增加模式), exclusive(只留这一个)
- * 必选：否
- * 默认值：append
+  * 描述：数据导入完成后增加别名的模式，append(增加模式), exclusive(只留这一个)
+  * 必选：否
+  * 默认值：append
 
 * settings
- * 描述：创建index时候的settings, 与elasticsearch官方相同
- * 必选：否
- * 默认值：无
+  * 描述：创建index时候的settings, 与elasticsearch官方相同
+  * 必选：否
+  * 默认值：无
 
 * splitter
- * 描述：如果插入数据是array，就使用指定分隔符
- * 必选：否
- * 默认值：-,-
+  * 描述：如果插入数据是array，就使用指定分隔符
+  * 必选：否
+  * 默认值：-,-
 
 * column
- * 描述：elasticsearch所支持的字段类型，样例中包含了全部
- * 必选：是
+  * 描述：elasticsearch所支持的字段类型，样例中包含了全部
+  * 必选：是
 
 * dynamic
- * 描述: 不使用datax的mappings，使用es自己的自动mappings
- * 必选: 否
- * 默认值: false
+  * 描述: 不使用datax的mappings，使用es自己的自动mappings
+  * 必选: 否
+  * 默认值: false
 
 
 
