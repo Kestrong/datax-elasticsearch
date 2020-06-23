@@ -567,13 +567,16 @@ public class ESWriter extends Writer {
             Map<String, Object> data = null;
             final Bulk.Builder bulkaction = new Bulk.Builder().defaultIndex(this.index).defaultType(this.type);
             for (Record record : writerBuffer) {
-                data = new HashMap<String, Object>();
+                data = new HashMap<>();
                 String id = null;
                 for (int i = 0; i < record.getColumnNumber(); i++) {
                     Column column = record.getColumn(i);
                     String columnName = columnList.get(i).getName();
                     ESFieldType columnType = typeList.get(i);
-                    id = setColumnValue(columnType, columnList.get(i), column, data, columnName);
+                    String tempId = setColumnValue(columnType, columnList.get(i), column, data, columnName);
+                    if (tempId != null) {
+                        id = tempId;
+                    }
                 }
 
                 if (id == null) {
