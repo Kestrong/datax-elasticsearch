@@ -344,7 +344,7 @@ public class ESWriter extends Writer {
             }
             //如果是数组类型，那它传入的必是字符串类型
             if (esColumn.isArray() != null && esColumn.isArray()) {
-                String[] dataList = column.asString().split(splitter);
+                String[] dataList = Optional.ofNullable(column.asString()).orElse(splitter).split(splitter);
                 if (!columnType.equals(ESFieldType.DATE)) {
                     data.put(columnName, dataList);
                 } else {
@@ -545,6 +545,9 @@ public class ESWriter extends Writer {
         }
 
         private String getDateStr(ESColumn esColumn, Column column) {
+            if (column.getRawData() == null) {
+                return null;
+            }
             DateTime date = null;
             DateTimeZone dtz = DateTimeZone.getDefault();
             if (esColumn.getTimezone() != null) {
