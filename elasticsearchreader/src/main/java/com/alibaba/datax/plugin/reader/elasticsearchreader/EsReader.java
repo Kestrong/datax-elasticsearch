@@ -10,6 +10,7 @@ import com.alibaba.datax.common.statistics.PerfTrace;
 import com.alibaba.datax.common.util.Configuration;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
 import io.searchbox.params.SearchType;
@@ -153,11 +154,12 @@ public class EsReader extends Reader {
             this.transportRecords(recordSender, searchResult);
             allResultPerfRecord.end();
             //do scroll
-            String scrollId = searchResult.getJsonObject().get("_scroll_id").getAsString();
-            log.info("scroll id:{}", scrollId);
-            if (StringUtils.isBlank(scrollId)) {
+            JsonElement scrollIdElement = searchResult.getJsonObject().get("_scroll_id");
+            if (scrollIdElement == null) {
                 return;
             }
+            String scrollId = scrollIdElement.getAsString();
+            log.info("scroll id:{}", scrollId);
             try {
                 boolean hasElement = true;
                 while (hasElement) {
@@ -181,6 +183,9 @@ public class EsReader extends Reader {
         }
 
         private SearchResult parseSearchResult(JestResult jestResult) {
+            if (jestResult == null) {
+                return null;
+            }
             SearchResult searchResult = new SearchResult(new Gson());
             searchResult.setSucceeded(jestResult.isSucceeded());
             searchResult.setResponseCode(jestResult.getResponseCode());
