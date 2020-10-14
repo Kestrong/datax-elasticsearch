@@ -69,10 +69,11 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                         || numberStr.contains("E")) {
                     return Double.parseDouble(numberStr);
                 }
-                if (Long.parseLong(numberStr) <= Integer.MAX_VALUE) {
-                    return Integer.parseInt(numberStr);
+                long value = Long.parseLong(numberStr);
+                if (value <= Integer.MAX_VALUE) {
+                    return (int) value;
                 }
-                return Long.parseLong(numberStr);
+                return value;
 
             case BOOLEAN:
                 return in.nextBoolean();
