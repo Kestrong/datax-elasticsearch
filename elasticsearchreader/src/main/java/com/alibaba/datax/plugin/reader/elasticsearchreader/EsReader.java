@@ -8,8 +8,10 @@ import com.alibaba.datax.common.spi.Reader;
 import com.alibaba.datax.common.statistics.PerfRecord;
 import com.alibaba.datax.common.statistics.PerfTrace;
 import com.alibaba.datax.common.util.Configuration;
+import com.alibaba.datax.plugin.reader.elasticsearchreader.gson.MapTypeAdapter;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -97,6 +100,7 @@ public class EsReader extends Reader {
 
         private Configuration conf;
         ESClient esClient = null;
+        Gson gson = null;
         private String index;
         private String type;
         private SearchType searchType;
@@ -120,6 +124,7 @@ public class EsReader extends Reader {
         public void init() {
             this.conf = super.getPluginJobConf();
             this.esClient = new ESClient();
+            this.gson = new GsonBuilder().registerTypeAdapterFactory(MapTypeAdapter.FACTORY).create();
             this.index = Key.getIndexName(conf);
             this.type = Key.getTypeName(conf);
             this.searchType = Key.getSearchType(conf);
@@ -186,7 +191,7 @@ public class EsReader extends Reader {
             if (jestResult == null) {
                 return null;
             }
-            SearchResult searchResult = new SearchResult(new Gson());
+            SearchResult searchResult = new SearchResult(gson);
             searchResult.setSucceeded(jestResult.isSucceeded());
             searchResult.setResponseCode(jestResult.getResponseCode());
             searchResult.setPathToResult(jestResult.getPathToResult());
@@ -266,10 +271,13 @@ public class EsReader extends Reader {
             if (result == null) {
                 return false;
             }
-            List<SearchResult.Hit<Map, Void>> hits = result.getHits(Map.class);
-            log.info("search result: total={},maxScore={},hits={}", result.getTotal(), result.getMaxScore(), hits.size());
+            List<String> sources = result.getSourceAsStringList();
+            if (sources == null) {
+                sources = Collections.emptyList();
+            }
+            log.info("search result: total={},maxScore={},hits={}", result.getTotal(), result.getMaxScore(), sources.size());
             List<Map<String, Object>> recordMaps = new ArrayList<>();
-            for (SearchResult.Hit<Map, Void> hit : hits) {
+            for (String source : sources) {
                 List<EsField> column = table.getColumn();
                 if (column == null || column.isEmpty()) {
                     continue;
@@ -277,11 +285,11 @@ public class EsReader extends Reader {
                 Map<String, Object> parent = new LinkedHashMap<>((int) (column.size() * 1.5));
                 setDefaultValue(table.getColumn(), parent);
                 recordMaps.add(parent);
-                getPathSource(recordMaps, hit.source, column, parent);
+                getPathSource(recordMaps, gson.fromJson(source, Map.class), column, parent);
                 this.transportOneRecord(table, recordSender, recordMaps);
                 recordMaps.clear();
             }
-            return hits.size() > 0;
+            return sources.size() > 0;
         }
 
         private void transportOneRecord(EsTable table, RecordSender recordSender, List<Map<String, Object>> recordMaps) {
@@ -328,9 +336,9 @@ public class EsReader extends Reader {
             } else if (value instanceof Short) {
                 col = new LongColumn(((Short) value).longValue());
             } else if (value instanceof Double) {
-                col = new DoubleColumn((Double) value);
+                col = new DoubleColumn(BigDecimal.valueOf((Double) value));
             } else if (value instanceof Float) {
-                col = new DoubleColumn(((Float) value).doubleValue());
+                col = new DoubleColumn(BigDecimal.valueOf(((Float) value).doubleValue()));
             } else if (value instanceof Date) {
                 col = new DateColumn((Date) value);
             } else if (value instanceof Boolean) {
