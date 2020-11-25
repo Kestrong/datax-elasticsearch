@@ -4,6 +4,7 @@ datax的elacticsearch读写插件
 
 # Quick Start
 
+* 获取阿里datax源码，编译并把datax-common发布到本地仓库
 * 使用maven编译：
 ```
 mvn -U clean package assembly:assembly -Dmaven.test.skip=true
