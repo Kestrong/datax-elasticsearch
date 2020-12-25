@@ -217,7 +217,7 @@ public class EsReader extends Reader {
             }
             for (EsField esField : column) {
                 if (!esField.hasChild()) {
-                    parent.put(esField.getFinalName(table.getNameCase()), esField.getValue() == null ? source.get(esField.getName()) : esField.getValue());
+                    parent.put(esField.getFinalName(table.getNameCase()), source.getOrDefault(esField.getName(), esField.getValue()));
                 }
             }
             for (EsField esField : column) {
@@ -232,12 +232,16 @@ public class EsReader extends Reader {
                     if (valueList.isEmpty()) {
                         continue;
                     }
-                    result.remove(parent);
-                    for (Map<String, Object> item : valueList) {
-                        HashMap<String, Object> childData = new LinkedHashMap<>(parent);
-                        result.add(childData);
-                        getPathSource(result, item, esField.getChild(), childData);
+                    List<Map<String, Object>> joinResults = new ArrayList<>();
+                    for (Map<String, Object> joinParent : result) {
+                        for (Map<String, Object> item : valueList) {
+                            HashMap<String, Object> childData = new LinkedHashMap<>(joinParent);
+                            joinResults.add(childData);
+                            getPathSource(joinResults, item, esField.getChild(), childData);
+                        }
                     }
+                    result.clear();
+                    result.addAll(joinResults);
                 }
             }
         }
