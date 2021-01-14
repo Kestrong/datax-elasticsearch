@@ -233,15 +233,18 @@ public class EsReader extends Reader {
                         continue;
                     }
                     List<Map<String, Object>> joinResults = new ArrayList<>();
-                    for (Map<String, Object> joinParent : result) {
+                    ArrayList<Map<String, Object>> copyResult = new ArrayList<>(result);
+                    result.clear();
+                    for (Map<String, Object> joinParent : copyResult) {
                         for (Map<String, Object> item : valueList) {
                             HashMap<String, Object> childData = new LinkedHashMap<>(joinParent);
                             joinResults.add(childData);
                             getPathSource(joinResults, item, esField.getChild(), childData);
+                            result.addAll(joinResults);
+                            joinResults.clear();
                         }
                     }
-                    result.clear();
-                    result.addAll(joinResults);
+                    copyResult.clear();
                 }
             }
         }
