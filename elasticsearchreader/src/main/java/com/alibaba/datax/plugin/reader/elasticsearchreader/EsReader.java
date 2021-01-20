@@ -316,7 +316,7 @@ public class EsReader extends Reader {
             for (Map.Entry<String, Object> entry : source.entrySet()) {
                 try {
                     Object o = source.get(entry.getKey());
-                    record.addColumn(getColumn(entry.getKey(), o));
+                    record.addColumn(getColumn(o));
                 } catch (Exception e) {
                     hasDirty = true;
                     sb.append(ExceptionTracker.trace(e));
@@ -328,7 +328,7 @@ public class EsReader extends Reader {
             return record;
         }
 
-        private Column getColumn(String name, Object value) {
+        private Column getColumn(Object value) {
             Column col;
             if (value == null) {
                 col = new StringColumn();
@@ -359,9 +359,8 @@ public class EsReader extends Reader {
             } else if (value instanceof Array) {
                 col = new StringColumn(JSON.toJSONString(value));
             } else {
-                throw DataXException.asDataXException(ESReaderErrorCode.UNKNOWN_DATA_TYPE, "name:" + name);
+                throw DataXException.asDataXException(ESReaderErrorCode.UNKNOWN_DATA_TYPE, "type:" + value.getClass().getName());
             }
-            col.setName(name);
             return col;
         }
 
