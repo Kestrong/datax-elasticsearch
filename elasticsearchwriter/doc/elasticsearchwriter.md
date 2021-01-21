@@ -61,7 +61,8 @@
               { "name": "col_object2", "type": "object" },
               { "name": "col_integer_array", "type":"integer", "array":true, "colNo": 10},
               { "name": "col_geo_shape", "type":"geo_shape", "tree": "quadtree", "precision": "10m", "colNo": 11},
-              { "name": "col_nested", "type": "nested", "child": [{"name": "id_2", "type": "id","ignore":true, "colNo": 12},{ "name": "col_1", "type": "text" , "colNo": 13}] }
+              { "name": "col_nested", "type": "nested", "child": [{"name": "id_2", "type": "id","ignore":true, "colNo": 12},{ "name": "col_1", "type": "text" , "colNo": 13}] },
+              { "name": "col_flattened", "type": "flattened", "child": [{"name": "id_3", "type": "id","ignore":true, "colNo": 14},{ "name": "col_1", "type": "text" , "colNo": 15}] }
             ]
           }
         }
