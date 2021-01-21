@@ -402,6 +402,7 @@ public class ESWriter extends Writer {
                         break;
                     case NESTED:
                     case OBJECT:
+                    case FLATTENED:
                     case GEO_SHAPE:
                         data.put(columnName, JSON.parse(column.asString()));
                         break;
