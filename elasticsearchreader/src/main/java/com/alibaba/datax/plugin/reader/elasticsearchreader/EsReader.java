@@ -282,7 +282,7 @@ public class EsReader extends Reader {
             if (sources == null) {
                 sources = Collections.emptyList();
             }
-            log.info("search result: total={},maxScore={},hits={}", result.getTotal(), result.getMaxScore(), sources.size());
+//            log.info("search result: total={},maxScore={},hits={}", result.getTotal(), result.getMaxScore(), sources.size());
             List<Map<String, Object>> recordMaps = new ArrayList<>();
             for (String source : sources) {
                 List<EsField> column = table.getColumn();
