@@ -70,7 +70,7 @@ public class MapTypeAdapter extends TypeAdapter<Object> {
                     return Double.parseDouble(numberStr);
                 }
                 long value = Long.parseLong(numberStr);
-                if (value <= Integer.MAX_VALUE) {
+                if (value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE) {
                     return (int) value;
                 }
                 return value;
