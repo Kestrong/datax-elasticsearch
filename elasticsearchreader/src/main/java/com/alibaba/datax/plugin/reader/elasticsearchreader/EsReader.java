@@ -108,6 +108,7 @@ public class EsReader extends Reader {
         private String query;
         private String scroll;
         private EsTable table;
+        private Map<String, Object> params;
 
         @Override
         public void prepare() {
@@ -132,6 +133,7 @@ public class EsReader extends Reader {
             this.query = Key.getQuery(conf);
             this.scroll = Key.getScroll(conf);
             this.table = Key.getTable(conf);
+            this.params = Key.getParams(conf);
             if (table == null || table.getColumn() == null || table.getColumn().isEmpty()) {
                 throw DataXException.asDataXException(ESReaderErrorCode.COLUMN_CANT_BE_EMPTY, "请检查job的elasticsearchreader插件下parameter是否配置了table参数");
             }
@@ -145,7 +147,7 @@ public class EsReader extends Reader {
             queryPerfRecord.start();
             SearchResult searchResult;
             try {
-                searchResult = esClient.search(query, searchType, index, type, scroll, headers);
+                searchResult = esClient.search(query, searchType, index, type, scroll, headers, params);
             } catch (Exception e) {
                 throw DataXException.asDataXException(ESReaderErrorCode.ES_SEARCH_ERROR, e);
             }

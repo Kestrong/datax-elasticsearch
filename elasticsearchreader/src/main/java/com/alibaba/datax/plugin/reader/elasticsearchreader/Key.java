@@ -133,6 +133,10 @@ public final class Key {
         return conf.getMap("headers", new HashMap<>());
     }
 
+    public static Map<String, Object> getParams(Configuration conf) {
+        return conf.getMap("params", new HashMap<>());
+    }
+
     public static String getQuery(Configuration conf) {
         return conf.getConfiguration(Key.SEARCH_KEY).toString();
     }

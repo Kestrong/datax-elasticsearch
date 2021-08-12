@@ -93,12 +93,19 @@ public class ESClient {
                                String index,
                                String type,
                                String scroll,
+                               Map<String, Object> params,
                                Map<String, Object> headers) throws IOException {
         Search.Builder searchBuilder = new Search.Builder(query)
                 .setSearchType(searchType)
                 .addIndex(index).addType(type).setHeader(headers);
         if (StringUtils.isNotBlank(scroll)) {
             searchBuilder.setParameter("scroll", scroll);
+        }
+        if(params != null && params.size() != 0) {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                log.info("elasticsearch set request params the item: " + entry.getKey() + ", and the value: " + entry.getValue());
+                searchBuilder.setParameter(entry.getKey(),entry.getValue());
+            }
         }
         return jestClient.execute(searchBuilder.build());
     }
